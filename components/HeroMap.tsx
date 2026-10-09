@@ -2,12 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import * as maplibregl from "maplibre-gl";
-import { addBoundaries, ATTRIBUTION, startPulse, baseStyle, findPlace, flyToBox, formatCoord, loadGeo, PAKISTAN_BBOX, prefersReducedMotion, setFocus, type BBox, type Place } from "./geo";
+import { addBoundaries, startPulse, baseStyle, findPlace, flyToBox, formatCoord, loadGeo, PAKISTAN_BBOX, prefersReducedMotion, setFocus, type BBox, type Place } from "./geo";
 
 const FEATURED = ["Bahawalnagar", "Faisalabad", "Attock"];
 
 // Floating layers over Pakistan, a visual cue for stacked analysis (not a legend).
-const STACK = ["#4ade80", "#fbbf24", "#60a5fa"];
+const STACK = ["#4ade80", "#fbbf24", "#38bdf8"];
 // Sections of the page, listed in the collapsible panel on the right of the hero.
 const SECTIONS = [
   { name: "About", href: "#about" },
@@ -16,19 +16,19 @@ const SECTIONS = [
     name: "Work",
     href: "#work",
     children: [
+      { name: "UAV-based plant growth tracking", href: "#uav" },
       { name: "Crop detection", href: "#crop-mapping" },
       { name: "Yield prediction", href: "#yield" },
       { name: "Flood mapping", href: "#flood" },
       { name: "Field-level advisories", href: "#advisory" },
-      { name: "UAV-based plant growth tracking", href: "#uav" },
     ],
   },
   { name: "Contact", href: "#contact" },
   { name: "CV", href: "/cv" },
 ];
-const SLAB = { base: 70000, gap: 120000, thick: 4000 }; // metres above ground
-const SLAB_OPACITY = 0.06;
-const EDGE_OPACITY = 0.45;
+const SLAB = { base: 50000, gap: 45000, thick: 4000 }; // metres above ground
+const SLAB_OPACITY = 0.12;
+const EDGE_OPACITY = 0.85;
 
 export default function HeroMap() {
   const el = useRef<HTMLDivElement>(null);
@@ -164,7 +164,7 @@ export default function HeroMap() {
           last = now;
           const t = now / 1000;
           STACK.forEach((_, i) => {
-            const b = SLAB.base + i * SLAB.gap + Math.sin(t * 0.8 + i * 0.9) * 9000;
+            const b = SLAB.base + i * SLAB.gap + Math.sin(t * 0.8 + i * 0.9) * 4500;
             for (const id of [`slab-${i}`, `edge-${i}`]) {
               map.setPaintProperty(id, "fill-extrusion-base", b);
               map.setPaintProperty(id, "fill-extrusion-height", b + SLAB.thick);
@@ -254,12 +254,12 @@ export default function HeroMap() {
             aria-expanded={panelOpen}
             aria-controls="hero-sections"
             aria-label={panelOpen ? "Hide sections" : "Show sections"}
-            className="press glass flex w-[34px] shrink-0 flex-col items-center justify-center gap-2 rounded-l-xl border border-r-0 border-white/10 text-white/60 hover:text-white"
+            className="group press glass flex w-[34px] shrink-0 flex-col items-center justify-center gap-2 rounded-l-xl border border-r-0 border-white/10 text-white/60 hover:text-white"
           >
-            <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" className="transition-transform duration-300" style={{ transform: panelOpen ? "rotate(0deg)" : "rotate(180deg)" }}>
+            <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" className="transition-transform duration-300 group-hover:text-white" style={{ transform: panelOpen ? "rotate(0deg)" : "rotate(180deg)" }}>
               <path d="M3.5 2l3 3-3 3" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em] [writing-mode:vertical-rl]">Sections</span>
+            <span className="text-[11px] font-medium tracking-[0.06em] text-white/70 transition-colors group-hover:text-white [writing-mode:vertical-rl]">Sections</span>
           </button>
           <div id="hero-sections" className="glass border border-white/10 py-2 pl-2 pr-6 transition-opacity duration-300" style={{ opacity: panelOpen ? 1 : 0 }} inert={!panelOpen}>
             <ul>
@@ -285,7 +285,6 @@ export default function HeroMap() {
           </div>
         </nav>
       )}
-      <p className="pointer-events-none absolute bottom-1 left-2 z-10 font-mono text-[9px] text-white/60">{ATTRIBUTION}</p>
     </div>
   );
 }

@@ -69,8 +69,8 @@ export default function LocatorMap({ target, label, coord, layer, from = "pakist
     let inView = false;
     let touched = false;
     let spin = 0;
-    let fly = () => {};
-    let stopPulse = () => {};
+    let fly = () => { };
+    let stopPulse = () => { };
 
     // Slow turntable rotation once the camera has landed, until the visitor takes over.
     const startSpin = (m: maplibregl.Map) => {
@@ -195,10 +195,9 @@ export default function LocatorMap({ target, label, coord, layer, from = "pakist
   }, [target?.kind, target?.name, layer, from, fields]);
 
   return (
-    <figure className="overflow-hidden rounded-[14px] border border-line bg-surface">
+    <figure className="card-hover overflow-hidden rounded-[14px] border border-line bg-surface">
       <div className="relative aspect-[4/3] w-full bg-black">
         <div ref={el} className="h-full w-full" role="application" aria-label={`Interactive 3D map of ${label}. Drag to pan; use the compass button to rotate and tilt.`} />
-        <p className="pointer-events-none absolute bottom-1 left-2 font-mono text-[9px] text-white/50">Esri, Maxar</p>
       </div>
       {ramp && (
         <div className="border-t border-line px-3 py-2.5" aria-label={`Colour scale from ${ramp.min} to ${ramp.max} ${ramp.unit}`}>
@@ -219,7 +218,7 @@ export default function LocatorMap({ target, label, coord, layer, from = "pakist
           <div className="h-1.5 rounded-full" style={{ background: `linear-gradient(90deg, ${FIELD_COLORS.join(", ")})` }} />
           <div className="mt-1.5 flex justify-between text-[11px] text-muted">
             <span>Stressed</span>
-            <span className="text-white/45">field condition, example plots</span>
+            <span className="text-white/45">field health</span>
             <span>Healthy</span>
           </div>
         </div>

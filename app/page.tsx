@@ -57,27 +57,40 @@ export default function Home() {
         <section id="background" aria-labelledby="background-h" className="scroll-mt-16 py-20">
           <h2 id="background-h" className={eyebrow}>Experience & education</h2>
           <ul className="mt-8 grid gap-8 sm:grid-cols-3 sm:gap-6">
-            {background.map((b) => (
+            {background.map((b, i) => (
               <li key={b.what}>
-                <p className="font-mono text-[11px] tracking-[0.06em] text-white/40">{b.when}</p>
-                <p className="mt-2 text-[15px] font-medium text-white/90">{b.what}</p>
-                <p className="mt-1 text-[13px] leading-[1.5] text-muted">{b.where}</p>
-                {b.note && (
-                  <a href={b.note.href} target="_blank" rel="noreferrer" className="press mt-2 inline-block text-[12px] text-white/50 underline-offset-4 hover:text-accent hover:underline">
-                    {b.note.text} <span aria-hidden="true">↗</span>
-                  </a>
-                )}
+                <Reveal delay={i * 70}>
+                  <p className="font-mono text-[11px] tracking-[0.06em] text-white/40">{b.when}</p>
+                  <p className="mt-2 text-[15px] font-medium text-white/90">{b.what}</p>
+                  {b.whereHref ? (
+                    <a
+                      href={b.whereHref}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="press mt-1 block text-[13px] leading-[1.5] text-muted hover:text-white"
+                    >
+                      {b.where} <span className="inline-block text-[11px] text-white/40" aria-hidden="true">↗</span>
+                    </a>
+                  ) : (
+                    <p className="mt-1 text-[13px] leading-[1.5] text-muted">{b.where}</p>
+                  )}
+                  {b.note && (
+                    <a href={b.note.href} target="_blank" rel="noreferrer" className="press mt-2 inline-block text-[12px] text-white/50 underline-offset-4 hover:text-accent hover:underline">
+                      {b.note.text} <span aria-hidden="true">↗</span>
+                    </a>
+                  )}
+                </Reveal>
               </li>
             ))}
           </ul>
         </section>
 
-        <section id="method" aria-labelledby="method-h" className="scroll-mt-16 border-t border-line py-32">
-          <h2 id="method-h" className={eyebrow}>Method</h2>
+        <section id="workflow" aria-labelledby="workflow-h" className="scroll-mt-16 border-t border-line py-32">
+          <h2 id="workflow-h" className={eyebrow}>Workflow</h2>
           <ol className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
             {method.map((m, i) => (
               <li key={m.step}>
-                <Reveal>
+                <Reveal delay={i * 70}>
                   <div className="border-t border-white/20 pt-5">
                     <div className="flex items-center justify-between">
                       <MethodIcon name={m.icon} />
@@ -129,7 +142,7 @@ export default function Home() {
                 <div className={`mt-16 grid items-start gap-6 ${p.shots.length > 1 ? "md:grid-cols-2" : ""}`}>
                   {p.shots.map((s) => (
                     <Reveal key={s.src}>
-                      <figure className="overflow-hidden rounded-[14px] border border-line bg-surface">
+                      <figure className="card-hover overflow-hidden rounded-[14px] border border-line bg-surface">
                         <a href={s.src} target="_blank" rel="noreferrer" aria-label={`Open full image: ${s.caption}`}>
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={s.src} width={s.w} height={s.h} alt={s.alt} loading="lazy" className="block h-auto w-full" />
@@ -163,8 +176,11 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="border-t border-line">
-        <p className="mx-auto max-w-6xl px-5 py-6 text-[12px] text-muted md:px-8">{profile.title}</p>
+      <footer className="border-t border-line py-8">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-5 font-mono text-[11px] text-white/50 md:px-8">
+          <span>Built with Next.js, MapLibre GL, Esri basemaps & Sentinel EO data</span>
+          <span>2026</span>
+        </div>
       </footer>
     </>
   );

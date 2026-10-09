@@ -17,7 +17,16 @@ type Frame = {
   /** "contain" for shots with a different shape, shown centred on the dashboard colour. */
   fit?: "cover" | "contain";
 };
-type Sequence = { dir: string; aspect: string; frames: Frame[]; groups?: { value: string; text: string }[]; /** Soften light-themed shots on the dark page. */ dim?: boolean };
+type Sequence = {
+  dir: string;
+  aspect: string;
+  frames: Frame[];
+  groups?: { value: string; text: string }[];
+  /** Soften light-themed shots on the dark page. */
+  dim?: boolean;
+  /** Custom fade duration in ms */
+  fadeMs?: number;
+};
 
 // Dashboard screenshots, aligned to the same frame so they blend in place.
 export const SEQUENCES: Record<string, Sequence> = {
@@ -63,24 +72,28 @@ export const SEQUENCES: Record<string, Sequence> = {
   flood: {
     dir: "/work/flood",
     aspect: "1917 / 992",
+    fadeMs: 700,
     frames: [
-      { id: "lodhran-low", w: 1917, h: 992, label: "Lodhran, week to 16 Sep 2026", hold: 2600, alt: "Lodhran district imagery with the flood layer faint" },
-      { id: "lodhran-high", w: 1917, h: 992, label: "Lodhran, week to 16 Sep 2026", hold: 2600, alt: "Lodhran district with flooded area mapped in blue, flood statistics and weekly trend" },
+      { id: "lodhran-low", w: 1917, h: 992, label: "Weekly flood observation", hold: 800, alt: "Lodhran district imagery with the flood layer faint" },
+      { id: "lodhran-high", w: 1917, h: 992, label: "Weekly flood observation", hold: 1600, alt: "Lodhran district with flooded area mapped in blue, flood statistics and weekly trend" },
     ],
   },
 };
 
-const FADE_MS = 1800;
-const EASE = "cubic-bezier(0.45, 0, 0.55, 1)"; // symmetric ease-in-out, so the blend has no visible start or stop
+const DEFAULT_FADE_MS = 1800;
+const EASE = "cubic-bezier(0.45, 0, 0.55, 1)"; // symmetric sinusoidal ease-in-out, zero start/stop jerk
 
 export default function BlendSequence({ name }: { name: keyof typeof SEQUENCES }) {
-  const { dir, aspect, frames, groups, dim } = SEQUENCES[name];
+  const { dir, aspect, frames, groups, dim, fadeMs } = SEQUENCES[name];
   const [index, setIndex] = useState(0);
   const [prev, setPrev] = useState<number | null>(null);
   const [reduced, setReduced] = useState(false);
   const [tick, setTick] = useState(0);
   const stage = useRef<HTMLDivElement>(null);
   const visible = useRef(false);
+
+  const isTwoFrameOverlay = frames.length === 2 && !frames[0].dive && !frames[1].dive;
+  const currentFade = reduced ? 400 : (fadeMs ?? DEFAULT_FADE_MS);
 
   const go = (next: number) => {
     setIndex((cur) => {
@@ -109,15 +122,30 @@ export default function BlendSequence({ name }: { name: keyof typeof SEQUENCES }
   const diving = prev !== null && !!current.dive && !reduced;
 
   return (
-    <figure className="overflow-hidden rounded-[14px] border border-line bg-surface">
+    <figure className="card-hover overflow-hidden rounded-[14px] border border-line bg-surface">
       <div ref={stage} className="relative w-full overflow-hidden bg-[#14161a]" style={{ aspectRatio: aspect, filter: dim ? "brightness(0.9) contrast(0.97)" : undefined }}>
         {frames.map((f, i) => {
-          const active = i === index;
-          const outgoing = i === prev && !active;
-          // The incoming view fades in on top while the outgoing one stays fully visible underneath,
-          // so the blend never dips through to the background.
-          const opacity = active || outgoing ? 1 : 0;
-          const scale = outgoing && diving ? 1.1 : 1;
+          let opacity = 0;
+          let zIndex = 0;
+
+          if (isTwoFrameOverlay) {
+            // For 2-frame overlay loops: base image is always visible underneath; overlay fades smoothly in and out
+            if (i === 0) {
+              opacity = 1;
+              zIndex = 1;
+            } else {
+              opacity = index === 1 ? 1 : 0;
+              zIndex = 2;
+            }
+          } else {
+            const active = i === index;
+            const outgoing = i === prev && !active;
+            opacity = active || outgoing ? 1 : 0;
+            zIndex = active ? 2 : outgoing ? 1 : 0;
+          }
+
+          const scale = isTwoFrameOverlay ? 1 : (prev === i && diving ? 1.1 : 1);
+
           return (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -128,19 +156,16 @@ export default function BlendSequence({ name }: { name: keyof typeof SEQUENCES }
               width={f.w}
               height={f.h}
               alt={f.alt}
-              aria-hidden={!active}
+              aria-hidden={index !== i}
               loading={i < 2 ? "eager" : "lazy"}
               className={`absolute inset-0 h-full w-full ${f.fit === "contain" ? "bg-[#14161a] object-contain" : "object-cover"}`}
               style={{
                 opacity,
-                transform: `scale(${scale})`,
+                transform: `scale(${scale}) translateZ(0)`,
                 transformOrigin: f.origin ?? "50% 50%",
-                transition: active
-                  ? `opacity ${reduced ? 600 : FADE_MS}ms ${EASE}`
-                  : outgoing
-                    ? `transform ${FADE_MS + 400}ms ${EASE}`
-                    : "none",
-                zIndex: active ? 2 : outgoing ? 1 : 0,
+                transition: `opacity ${currentFade}ms ${EASE}, transform ${currentFade + 400}ms ${EASE}`,
+                willChange: "opacity, transform",
+                zIndex,
               }}
             />
           );

@@ -2,7 +2,7 @@
 
 export const profile = {
   name: "Saleha Zainab Fatima",
-  role: "Team Lead, Data & AI at GreenAI, precision agriculture division, Pakistan",
+  role: "Leading Data & AI at GreenAI, Precision Agriculture Division, Pakistan",
   cv: "/Saleha_Zainab_Fatima_CV.pdf",
   title: "Geospatial Data & AI Engineer, national-scale Earth observation",
   statement: "I turn raw, messy data from multiple sources into statistics that hold up on the ground.",
@@ -11,7 +11,7 @@ export const profile = {
   ],
   affiliation:
     "The crop mapping, yield and advisory work was built independently as part of Agriverse, a national precision agriculture programme funded and backed by the Government of Pakistan.",
-  contactLine: "Open to roles, research programmes and project work.",
+  contactLine: "Open to roles, research, and high-impact collaboration in Earth observation, Geospatial AI, and AgriTech.",
   links: [
     { label: "saleha.zf22@gmail.com", href: "mailto:saleha.zf22@gmail.com" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/saleha-zainab-fatima/" },
@@ -21,19 +21,30 @@ export const profile = {
 };
 
 // Kept short on purpose: the work above carries the page.
-export const background: { when: string; what: string; where: string; note?: { text: string; href: string } }[] = [
-  { when: "2025 to now", what: "Team Lead, Data & AI", where: "GreenAI, National Science and Technology Park, Islamabad" },
+export const background: { when: string; what: string; where: string; whereHref?: string; note?: { text: string; href: string } }[] = [
+  {
+    when: "2025 to now",
+    what: "Team Lead, Data & AI",
+    where: "GreenAI, National Science and Technology Park, Islamabad",
+    whereHref: "https://greenai.org.pk/",
+  },
   {
     when: "2025",
     what: "Deep Learning Research Intern",
     where: "Machine Vision and Intelligent Systems Lab",
+    whereHref: "https://vision.seecs.edu.pk/",
     note: { text: "Published in IEEE Xplore", href: "https://ieeexplore.ieee.org/document/11321433/" },
   },
-  { when: "2022 to 2026", what: "BE Software Engineering", where: "National University of Sciences & Technology (NUST), Islamabad" },
+  {
+    when: "2022 to 2026",
+    what: "BE Software Engineering",
+    where: "National University of Sciences & Technology (NUST), Islamabad",
+    whereHref: "https://nust.edu.pk/",
+  },
 ];
 
 export const method = [
-  { step: "Collect", icon: "satellite", text: "Sentinel-1 radar, Sentinel-2 optical, UAV multispectral and thermal flights, weather feeds and AgriStats tables." },
+  { step: "Collect", icon: "satellite", text: "Satellite constellations (Sentinel-1 SAR, Sentinel-2, Landsat), multispectral and thermal UAV surveys, meteorological feeds, and historical agricultural statistics." },
   { step: "Fuse", icon: "layers", text: "Radar and optical time series, drone imagery and district statistics brought onto one grid, field by field." },
   { step: "Ground", icon: "target", text: "Checked against field surveys and ground measurements before anything ships." },
   { step: "Deliver", icon: "chart", text: "Cloud-optimised GeoTIFFs, provincial, district and field statistics, and dashboards, refreshed every week or season." },
@@ -52,6 +63,19 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    id: "uav",
+    title: "UAV-Based Plant Growth Tracking",
+    body: "Multispectral and thermal UAV imagery used to track growth stages and predict yield for wheat, rice and sunflower, combined with weather to produce stage-specific advice.",
+    publication: {
+      title: "Semi-Supervised Contrastive Representation Learning for Sunflower Phenology Estimation",
+      venue: "IEEE Xplore, ICET 2025",
+      href: "https://ieeexplore.ieee.org/document/11321433/",
+    },
+    sequence: "uav",
+    shots: [],
+  },
+
   {
     id: "crop-mapping",
     title: "Crop mapping before harvest",
@@ -88,16 +112,5 @@ export const projects: Project[] = [
       { src: "/work/advisory.png", w: 1553, h: 643, alt: "Field boundaries on imagery beside a generated advisory for a maize field at tasselling", caption: "Maize at tasselling, Kharif 2026" },
     ],
   },
-  {
-    id: "uav",
-    title: "Crop growth from drones",
-    body: "Multispectral and thermal UAV imagery used to track growth stages and predict yield for wheat, rice and sunflower, combined with weather to produce stage-specific advice.",
-    publication: {
-      title: "Semi-Supervised Contrastive Representation Learning for Sunflower Phenology Estimation",
-      venue: "IEEE Xplore, ICET 2025",
-      href: "https://ieeexplore.ieee.org/document/11321433/",
-    },
-    sequence: "uav",
-    shots: [],
-  },
+
 ];

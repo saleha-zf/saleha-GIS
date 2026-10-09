@@ -1,0 +1,68 @@
+{
+ "corners": [
+  [
+   71.616839,
+   31.967282
+  ],
+  [
+   73.196212,
+   31.967282
+  ],
+  [
+   73.196212,
+   30.59232
+  ],
+  [
+   71.616839,
+   30.59232
+  ]
+ ],
+ "legend": [
+  {
+   "name": "Rice",
+   "color": "#f4c032",
+   "share": 0.3756
+  },
+  {
+   "name": "Sugarcane",
+   "color": "#e5fe41",
+   "share": 0.3358
+  },
+  {
+   "name": "Bare / Fallow",
+   "color": "#55585c",
+   "share": 0.0906
+  },
+  {
+   "name": "Trees / Natural vegetation",
+   "color": "#176b3a",
+   "share": 0.0792
+  },
+  {
+   "name": "Maize",
+   "color": "#e03b3b",
+   "share": 0.0563
+  },
+  {
+   "name": "Other crops",
+   "color": "#70b77e",
+   "share": 0.0526
+  },
+  {
+   "name": "Cotton",
+   "color": "#dceaf2",
+   "share": 0.0063
+  },
+  {
+   "name": "Water",
+   "color": "#1455a0",
+   "share": 0.0036
+  },
+  {
+   "name": "Groundnut",
+   "color": "#ab6330",
+   "share": 0.0001
+  }
+ ],
+ "image": "jhang-kharif.webp"
+}

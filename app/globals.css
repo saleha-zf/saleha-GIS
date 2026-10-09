@@ -73,24 +73,6 @@ body {
   font-size: 12px;
 }
 
-.pin {
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  cursor: pointer;
-  background: none;
-  border: 0;
-  padding: 0;
-}
-.pin::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  animation: pulse 2.4s ease-out infinite;
-}
 @keyframes pulse {
   0% {
     box-shadow: 0 0 0 0 rgba(185, 243, 107, 0.5);
@@ -98,6 +80,12 @@ body {
   100% {
     box-shadow: 0 0 0 12px rgba(185, 243, 107, 0);
   }
+}
+
+/* Map controls fade out as the hero darkens on scroll */
+.hero-hud,
+.hero-stage .maplibregl-ctrl {
+  opacity: calc(1 - var(--hero-dim, 0) * 1.8);
 }
 
 .glass {
@@ -127,8 +115,5 @@ body {
     opacity: 1;
     transform: none;
     transition: none;
-  }
-  .pin::before {
-    animation: none;
   }
 }

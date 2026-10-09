@@ -6,8 +6,9 @@ export type BBox = [number, number, number, number];
 export type Place = { name: string; province?: string; cx?: number; cy?: number; bbox: BBox };
 type FC = { type: "FeatureCollection"; features: { properties: Record<string, unknown> }[] };
 
-export const ATTRIBUTION = "Imagery: Esri, Maxar, Earthstar Geographics. Boundaries: geoBoundaries";
-export const PAKISTAN_BBOX: BBox = [60.88, 23.73, 77.82, 37.0];
+export const ATTRIBUTION = "Imagery: Esri, Maxar, Earthstar Geographics";
+export const PAKISTAN_BBOX: BBox = [60.9, 23.7, 77.84, 37.1];
+export const PUNJAB_BBOX: BBox = [69.26, 27.7, 75.37, 34.02];
 export const ACCENT = "#b9f36b";
 
 // WebGL satellite basemap on a globe. If tiles cannot load, boundaries still draw on a flat sphere.
@@ -33,14 +34,15 @@ export const baseStyle: StyleSpecification = {
   ],
 };
 
-let cache: Promise<{ provinces: FC; districts: FC }> | null = null;
+let cache: Promise<{ provinces: FC; districts: FC; country: object }> | null = null;
 
 export function loadGeo() {
   if (!cache) {
     cache = Promise.all([
       fetch("/geo/provinces.json").then((r) => r.json()),
       fetch("/geo/districts.json").then((r) => r.json()),
-    ]).then(([provinces, districts]) => ({ provinces, districts }));
+      fetch("/geo/country.json").then((r) => r.json()),
+    ]).then(([provinces, districts, country]) => ({ provinces, districts, country }));
   }
   return cache;
 }
@@ -50,9 +52,10 @@ export function findPlace(fc: FC, name: string): Place | undefined {
 }
 
 /** Adds every province and district of Pakistan, plus hover and focus layers. */
-export function addBoundaries(map: MLMap, geo: { provinces: FC; districts: FC }) {
+export function addBoundaries(map: MLMap, geo: { provinces: FC; districts: FC; country: object }) {
   map.addSource("provinces", { type: "geojson", data: geo.provinces as never });
   map.addSource("districts", { type: "geojson", data: geo.districts as never, generateId: true });
+  map.addSource("country", { type: "geojson", data: geo.country as never });
   map.addLayer({
     id: "district-pulse",
     type: "fill",
@@ -78,7 +81,15 @@ export function addBoundaries(map: MLMap, geo: { provinces: FC; districts: FC })
     id: "province-lines",
     type: "line",
     source: "provinces",
-    paint: { "line-color": "#ffffff", "line-opacity": 0.8, "line-width": 1.1 },
+    paint: { "line-color": "#ffffff", "line-opacity": 0.75, "line-width": 1.1 },
+  });
+  // The national border, drawn heavier so Pakistan reads first.
+  map.addLayer({
+    id: "country-line",
+    type: "line",
+    source: "country",
+    layout: { "line-join": "round" },
+    paint: { "line-color": "#ffffff", "line-opacity": 0.95, "line-width": ["interpolate", ["linear"], ["zoom"], 3, 2, 7, 2.8] },
   });
   map.addLayer({
     id: "focus-province",
@@ -118,6 +129,8 @@ export function flyToBox(
   const { padding = 40, pitch = 0, bearing = 0, duration = 4000, maxZoom = 9 } = opts;
   const cam = map.cameraForBounds(bbox, { padding, maxZoom });
   if (!cam) return;
+  // A tilted camera sees further towards the horizon, so pull back a little to keep the whole area in view.
+  if (pitch > 0 && cam.zoom !== undefined) cam.zoom -= pitch / 120;
   if (prefersReducedMotion() || duration === 0) map.jumpTo({ ...cam, pitch, bearing });
   else map.flyTo({ ...cam, pitch, bearing, duration, curve: 1.5, essential: true });
 }

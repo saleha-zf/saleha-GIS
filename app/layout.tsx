@@ -5,7 +5,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Saleha | Geospatial Data & AI Engineer",
+  title: "Saleha Zainab Fatima | Geospatial Data & AI Engineer",
   description:
     "Geospatial Data & AI Engineer working on national-scale Earth observation. Raw, messy data from multiple sources turned into statistics that hold up on the ground.",
 };

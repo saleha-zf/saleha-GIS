@@ -39,3 +39,23 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# source data and recordings (kept locally, not published)
+/raw/
+*.tif
+*.tiff
+*.mp4
+*.mov
+*.shp
+*.shx
+*.dbf
+*.prj
+*.cpg
+
+# local clutter
+Thumbs.db
+desktop.ini
+*.zip
+*.log
+# CVs belong only in public/ (the copy the site serves)
+/app/**/*.pdf

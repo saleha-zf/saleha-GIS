@@ -7,7 +7,7 @@ export const profile = {
   title: "Geospatial Data & AI Engineer, national-scale Earth observation",
   statement: "I turn raw, messy data from multiple sources into statistics that hold up on the ground.",
   about: [
-    "I have worked on national projects across Pakistan, building end-to-end pipelines that ingest raw, multimodal data and turn it into decision-ready maps and statistics.",
+    "I work on national projects across Pakistan, building end-to-end pipelines that ingest raw, multimodal data and turn it into decision-ready maps and statistics.",
   ],
   affiliation:
     "The crop mapping, yield and advisory work was built independently as part of Agriverse, a national precision agriculture programme funded and backed by the Government of Pakistan.",

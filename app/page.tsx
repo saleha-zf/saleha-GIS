@@ -54,7 +54,7 @@ export default function Home() {
       </ScrollDim>
 
       <main className="mx-auto max-w-6xl px-5 md:px-8">
-        <section id="background" aria-labelledby="background-h" className="scroll-mt-16 py-20">
+        <section id="background" aria-labelledby="background-h" className="scroll-mt-16 py-16 md:py-20">
           <h2 id="background-h" className={eyebrow}>Experience & education</h2>
           <ul className="mt-8 grid gap-8 sm:grid-cols-3 sm:gap-6">
             {background.map((b, i) => (
@@ -85,9 +85,9 @@ export default function Home() {
           </ul>
         </section>
 
-        <section id="workflow" aria-labelledby="workflow-h" className="scroll-mt-16 border-t border-line py-32">
+        <section id="workflow" aria-labelledby="workflow-h" className="scroll-mt-16 border-t border-line py-20 md:py-24">
           <h2 id="workflow-h" className={eyebrow}>Workflow</h2>
-          <ol className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+          <ol className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
             {method.map((m, i) => (
               <li key={m.step}>
                 <Reveal delay={i * 70}>
@@ -105,15 +105,15 @@ export default function Home() {
           </ol>
         </section>
 
-        <section id="work" aria-labelledby="work-h" className="scroll-mt-16 border-t border-line pt-32">
+        <section id="work" aria-labelledby="work-h" className="scroll-mt-16 border-t border-line pt-16 md:pt-20">
           <h2 id="work-h" className={eyebrow}>Work</h2>
           {projects.map((p, i) => (
-            <article key={p.id} id={p.id} className="scroll-mt-16 border-b border-line py-24 last:border-b-0 md:py-32">
+            <article key={p.id} id={p.id} className="scroll-mt-16 border-b border-line py-20 first:pt-6 last:border-b-0 md:py-28 md:first:pt-8">
               <div className="grid gap-12 md:grid-cols-12">
-                <Reveal className="md:col-span-7">
+                <Reveal className={p.map ? "md:col-span-7" : "md:col-span-12"}>
                   <span className="font-mono text-[11px] tracking-[0.1em] text-accent">{String(i + 1).padStart(2, "0")}</span>
                   <h3 className="mt-3 text-[2rem] font-medium leading-[1.08] tracking-[-0.03em] md:text-[2.75rem]">{p.title}</h3>
-                  <p className="mt-6 max-w-xl text-[17px] leading-[1.5] text-muted">{p.body}</p>
+                  <p className="mt-6 max-w-2xl text-[17px] leading-[1.5] text-muted">{p.body}</p>
                   {p.publication && (
                     <a href={p.publication.href} target="_blank" rel="noreferrer" className="press group mt-10 block max-w-xl border-t border-white/20 pt-5">
                       <span className="font-mono text-[11px] uppercase tracking-[0.1em] text-accent">Published · {p.publication.venue}</span>
@@ -129,9 +129,11 @@ export default function Home() {
                     </div>
                   )}
                 </Reveal>
-                <Reveal className="md:col-span-5">
-                  {p.map && <LocatorMap {...p.map} />}
-                </Reveal>
+                {p.map && (
+                  <Reveal className="md:col-span-5">
+                    <LocatorMap {...p.map} />
+                  </Reveal>
+                )}
               </div>
               {p.sequence && (
                 <Reveal className="mt-16">
@@ -157,7 +159,7 @@ export default function Home() {
           ))}
         </section>
 
-        <section id="contact" aria-labelledby="contact-h" className="scroll-mt-16 border-t border-line py-28 md:py-36">
+        <section id="contact" aria-labelledby="contact-h" className="scroll-mt-16 border-t border-line py-20 md:py-24">
           <Reveal className="max-w-3xl">
             <h2 id="contact-h" className={eyebrow}>Contact</h2>
             <p className="mt-6 text-[2rem] font-medium leading-[1.1] tracking-[-0.03em] md:text-[3rem]">{profile.contactLine}</p>

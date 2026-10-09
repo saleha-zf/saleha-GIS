@@ -45,9 +45,9 @@ export const background: { when: string; what: string; where: string; whereHref?
 
 export const method = [
   { step: "Collect", icon: "satellite", text: "Satellite constellations (Sentinel-1 SAR, Sentinel-2, Landsat), multispectral and thermal UAV surveys, meteorological feeds, and historical agricultural statistics." },
-  { step: "Fuse", icon: "layers", text: "Radar and optical time series, drone imagery and district statistics brought onto one grid, field by field." },
+  { step: "Fuse", icon: "layers", text: "Spatiotemporal georeferencing, and temporal alignment across varying spatial resolutions, harmonizing all streams onto a single, standardized spatial grid." },
   { step: "Ground", icon: "target", text: "Checked against field surveys and ground measurements before anything ships." },
-  { step: "Deliver", icon: "chart", text: "Cloud-optimised GeoTIFFs, provincial, district and field statistics, and dashboards, refreshed every week or season." },
+  { step: "Deliver", icon: "chart", text: "Cloud-Optimized GeoTIFFs (COGs), field-to-provincial statistics, and interactive dashboards, refreshed weekly and seasonally." },
 ] as const;
 
 export type Project = {
@@ -88,7 +88,7 @@ export const projects: Project[] = [
   {
     id: "yield",
     title: "Yield at pixel level",
-    body: "Wheat yield predicted for every field before harvest, trained on a five-year yield database and built with geospatial techniques such as dasymetric mapping and spatial interpolation.",
+    body: "Crop yield predicted for every field before harvest, trained on a self-curated five-year national database built from multi-source records, and modeled with geospatial techniques such as dasymetric mapping and spatial interpolation.",
     proof: { value: "83%", label: "accuracy on field-measured yields" },
     map: { target: { kind: "district", name: "Sargodha" }, label: "Sargodha, Rabi 2026", coord: [72.719, 32.1], layer: "/layers/sargodha-yield", from: "punjab" },
     sequence: "yield",
@@ -98,7 +98,7 @@ export const projects: Project[] = [
     id: "flood",
     title: "Weekly flood watch",
     body: "Sentinel-1 SAR composites built every week for every district of Pakistan and stored as cloud-optimised GeoTIFFs. Each one separates permanent water, seasonal water and flood, then reports how much of the district and how much of its cropland is under water.",
-    proof: { value: "91%", label: "IoU score, validated against UNOSAT 2022 flood extents" },
+    proof: { value: "91%", label: "IoU score, validated against UNOSAT and Copernicus EMS 2022 flood extents" },
     map: { target: { kind: "district", name: "Lodhran" }, label: "Lodhran, weekly composite", coord: [71.731, 29.643], layer: "/layers/lodhran-flood", from: "punjab" },
     sequence: "flood",
     shots: [],
